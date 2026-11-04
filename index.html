@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MEO GIS Portaal</title>
+  <meta name="description" content="MEO Economische Controle — overzicht van standplaatsen, inspecties en beleid op Curaçao." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="css/portal.css?v=14" />
+</head>
+<body>
+  <!-- SVG icon sprite (Lucide-stijl, 24px, stroke) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+      <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+      <symbol id="i-export" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></symbol>
+      <symbol id="i-sort" viewBox="0 0 24 24"><path d="m8 15 4 4 4-4"/><path d="m8 9 4-4 4 4"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></symbol>
+      <symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+      <symbol id="i-map" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#main">Naar inhoud</a>
+
+  <!-- Toegangsscherm -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate__card">
+      <img class="gate__logo" src="assets/meo-logo.jpg" alt="Ministerie van Economische Ontwikkeling" width="380" height="88" />
+      <h1 id="gate-title">GIS Portaal</h1>
+      <p class="gate__lead">Standplaatsen, inspecties en beleid in één rustig overzicht.</p>
+      <div class="gate__actions">
+        <button class="pill pill--dark pill--lg" id="btn-login" type="button">
+          <svg class="ico" aria-hidden="true"><use href="#i-login"/></svg> Inloggen met ArcGIS
+        </button>
+        <button class="pill pill--lg" id="btn-demo" type="button">
+          <svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg> Demo bekijken
+        </button>
+      </div>
+      <p class="gate__note" id="gate-note">Gebruik uw MEO ArcGIS-account voor actuele gegevens. De demo toont een momentopname van 2 november 2026.</p>
+    </div>
+  </div>
+
+  <div class="frame" id="app" aria-hidden="true">
+    <!-- Kopbalk -->
+    <header class="header">
+     <div class="header__inner">
+      <a class="brand" href="#overzicht" aria-label="MEO GIS Portaal — overzicht">
+        <img src="assets/meo-logo.jpg" alt="Ministerie van Economische Ontwikkeling" width="174" height="40" />
+      </a>
+
+      <nav class="nav" aria-label="Hoofdnavigatie">
+        <a href="#overzicht" data-nav="overzicht"><svg class="ico nav__ico" aria-hidden="true"><use href="#i-grid"/></svg><span>Overzicht</span></a>
+        <a href="#kaart" data-nav="kaart"><svg class="ico nav__ico" aria-hidden="true"><use href="#i-map"/></svg><span>Kaart</span></a>
+        <a href="#beleid" data-nav="beleid"><svg class="ico nav__ico" aria-hidden="true"><use href="#i-shield"/></svg><span>Beleid</span></a>
+        <a href="#inspecties" data-nav="inspecties"><svg class="ico nav__ico" aria-hidden="true"><use href="#i-clipboard"/></svg><span>Inspecties</span></a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="pill" id="lnk-inspectie" target="_blank" rel="noopener">
+          <svg class="ico" aria-hidden="true"><use href="#i-clipboard"/></svg><span>Nieuwe inspectie</span>
+        </a>
+        <button class="round" id="btn-refresh" type="button" aria-label="Gegevens vernieuwen">
+          <svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg>
+        </button>
+        <button class="round round--user" id="mode-chip" type="button" aria-label="Account">
+          <svg class="ico" aria-hidden="true"><use href="#i-user"/></svg>
+          <span class="round__dot" aria-hidden="true"></span>
+        </button>
+      </div>
+     </div>
+    </header>
+
+    <main id="main" class="main">
+      <!-- Paginatitel + verdeling -->
+      <div class="titlebar">
+        <div>
+          <p class="eyebrow">Economische Controle · Standplaatsen</p>
+          <h1 id="page-title">Overzicht</h1>
+          <p class="titlebar__sub" id="page-sub"></p>
+        </div>
+        <span class="mode" id="mode-label"></span>
+      </div>
+
+      <div class="summary">
+        <div class="segments-wrap">
+          <div class="segments" id="segments" aria-label="Verdeling per status"></div>
+          <ul class="seg-legend" id="seg-legend" aria-label="Verdeling per status"></ul>
+        </div>
+        <div class="summary__links">
+          <a class="pill pill--soft" id="lnk-insp-dash" target="_blank" rel="noopener">Centraal dashboard <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg></a>
+          <a class="pill pill--soft" id="lnk-beleid" target="_blank" rel="noopener">Beleid dashboard <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg></a>
+          <a class="pill pill--soft" id="lnk-portal" target="_blank" rel="noopener">ArcGIS Online <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Werkblad -->
+      <section class="sheet">
+        <div class="sheet__top">
+          <div class="sheet__tab" role="group" aria-label="Filters">
+            <div class="filters">
+            <label class="pill pill--select"><span class="sr-only">Zone</span>
+              <select id="f-zone"><option value="">Zone</option></select>
+              <svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+            <label class="pill pill--select"><span class="sr-only">Status</span>
+              <select id="f-status"><option value="">Status</option></select>
+              <svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+            <label class="pill pill--select"><span class="sr-only">Soort zaak</span>
+              <select id="f-soort"><option value="">Soort zaak</option></select>
+              <svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+            <label class="pill pill--select"><span class="sr-only">Inspecteur</span>
+              <select id="f-inspecteur"><option value="">Inspecteur</option></select>
+              <svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+            <label class="pill pill--select"><span class="sr-only">Periode</span>
+              <select id="f-periode">
+                <option value="">Periode</option>
+                <option value="30">Laatste 30 dagen</option>
+                <option value="90">Laatste 90 dagen</option>
+                <option value="182">Laatste 6 maanden</option>
+                <option value="365">Laatste 12 maanden</option>
+              </select>
+              <svg class="ico" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+            </div>
+            <div class="search" role="search">
+              <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+              <input id="search" type="search" placeholder="Zoeken" autocomplete="off"
+                     role="combobox" aria-expanded="false" aria-controls="search-results" aria-label="Zoek standplaats of bedrijf" />
+              <ul class="search__results" id="search-results" role="listbox" hidden></ul>
+            </div>
+          </div>
+          <div class="sheet__tools">
+            <a class="round" id="lnk-standplaats" target="_blank" rel="noopener" aria-label="Nieuwe standplaats toevoegen" title="Nieuwe standplaats">
+              <svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </a>
+            <button class="round" id="btn-reset" type="button" aria-label="Filters wissen" title="Filters wissen">
+              <svg class="ico" aria-hidden="true"><use href="#i-sliders"/></svg>
+              <span class="round__badge" id="filter-count" hidden></span>
+            </button>
+            <button class="pill" id="btn-export" type="button">
+              <svg class="ico" aria-hidden="true"><use href="#i-export"/></svg> Export
+            </button>
+          </div>
+        </div>
+
+        <div class="sheet__body">
+          <!-- OVERZICHT -->
+          <div class="page" data-page="overzicht">
+            <dl class="stats" id="kpis"></dl>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"><button data-sort="naam">Naam</button></th>
+                    <th scope="col"><button data-sort="soort"><svg aria-hidden="true"><use href="#i-sort"/></svg>Soort zaak</button></th>
+                    <th scope="col"><button data-sort="zone"><svg aria-hidden="true"><use href="#i-sort"/></svg>Zone</button></th>
+                    <th scope="col"><button data-sort="datum"><svg aria-hidden="true"><use href="#i-sort"/></svg>Laatste inspectie</button></th>
+                    <th scope="col"><button data-sort="vergunning"><svg aria-hidden="true"><use href="#i-sort"/></svg>Vergunning</button></th>
+                    <th scope="col"><button data-sort="afgevoerd"><svg aria-hidden="true"><use href="#i-sort"/></svg>Afgevoerd</button></th>
+                    <th scope="col"><button data-sort="status"><svg aria-hidden="true"><use href="#i-sort"/></svg>Status</button></th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+              <p class="empty" id="table-empty" hidden>Geen standplaatsen voor deze filters.</p>
+            </div>
+          </div>
+
+          <!-- KAART -->
+          <div class="page" data-page="kaart" hidden>
+            <div class="mapgrid">
+              <div class="mapbox">
+                <div id="map" class="map" aria-label="Kaart van standplaatsen"></div>
+                <div class="map__legend" id="map-legend"></div>
+                <div class="seg" role="tablist" aria-label="Kleur op">
+                  <button role="tab" aria-selected="true" data-color="status">Status</button>
+                  <button role="tab" aria-selected="false" data-color="vergunning">Vergunning</button>
+                </div>
+                <div class="seg seg--basemap" role="tablist" aria-label="Basiskaart">
+                  <button role="tab" aria-selected="true" data-basemap="kaart">Kaart</button>
+                  <button role="tab" aria-selected="false" data-basemap="satelliet">Satelliet</button>
+                </div>
+                <div class="map__empty" id="map-empty" hidden>Kaart kon niet laden. Controleer de internetverbinding.</div>
+              </div>
+              <div class="queue">
+                <h2>Werkvoorraad</h2>
+                <div class="seg seg--full" role="tablist" aria-label="Werkvoorraad">
+                  <button role="tab" aria-selected="true" data-queue="todo">Te doen <b id="q-todo">0</b></button>
+                  <button role="tab" aria-selected="false" data-queue="old">&gt; 6 mnd <b id="q-old">0</b></button>
+                  <button role="tab" aria-selected="false" data-queue="bad">Overtreding <b id="q-bad">0</b></button>
+                </div>
+                <ul class="queue__list" id="queue" role="tabpanel"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- BELEID -->
+          <div class="page" data-page="beleid" hidden>
+            <div class="charts charts--3">
+              <article class="chart"><h2>Vergunning</h2><p>Heeft de standplaats een vergunning?</p><div id="c-vergunning"></div></article>
+              <article class="chart"><h2>Afgevoerd na sluitingstijd</h2><p>Wordt de standplaats na sluiting verwijderd?</p><div id="c-afgevoerd"></div></article>
+              <article class="chart"><h2>Binnen- / buitenstad</h2><p>Spreiding over de zones</p><div id="c-zone"></div></article>
+            </div>
+            <article class="chart chart--wide"><h2>Soort zaak</h2><p>Aantal standplaatsen per type, met statusverdeling</p><div id="c-soort"></div></article>
+          </div>
+
+          <!-- INSPECTIES -->
+          <div class="page" data-page="inspecties" hidden>
+            <article class="chart chart--wide"><h2>Controles per maand</h2><p id="c-trend-sub">Uitgevoerde inspecties over de afgelopen 12 maanden</p><div id="c-trend"></div></article>
+            <div class="charts charts--3">
+              <article class="chart"><h2>Overtredingen</h2><p>Geconstateerd tijdens inspecties</p><div id="c-overtredingen"></div></article>
+              <article class="chart"><h2>Ontbrekende vergunningen</h2><p>Zonder vergunning aangetroffen</p><div id="c-zonder"></div></article>
+              <article class="chart"><h2>Inspecteurs</h2><p>Uitgevoerde controles</p><div id="c-inspecteurs"></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot"><span>MEO GIS Portaal · bron: meo.maps.arcgis.com</span><span id="foot-sync"></span></footer>
+    </main>
+
+    <!-- Detailpaneel -->
+    <aside class="drawer" id="drawer" aria-labelledby="d-title" aria-hidden="true">
+      <div class="drawer__head">
+        <div>
+          <p class="drawer__eyebrow" id="d-soort"></p>
+          <h2 id="d-title"></h2>
+        </div>
+        <button class="round" id="d-close" type="button" aria-label="Sluit detailpaneel">
+          <svg class="ico" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+      <div class="drawer__body" id="d-body"></div>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/config.js?v=8"></script>
+  <script src="js/demo-data.js?v=8"></script>
+  <script src="https://js.arcgis.com/4.31/"></script>
+  <script src="js/app.js?v=11"></script>
+</body>
+</html>

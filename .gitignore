@@ -1,0 +1,9 @@
+# Hulpbestanden van ontwikkeltools
+.claude/
+.agents/
+skills-lock.json
+
+# Systeem
+.DS_Store
+Thumbs.db
+desktop.ini
